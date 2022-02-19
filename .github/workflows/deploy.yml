@@ -10,7 +10,7 @@ jobs:
   build:
 
     name: Build and test
-    runs-on: ['desk-self-runner']
+    runs-on: ['self-hosted']
 
     steps:
     - uses: actions/checkout@v2
