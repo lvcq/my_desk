@@ -18,7 +18,7 @@ defmodule HttpServer.Router do
   plug(:dispatch)
 
   get "/hello" do
-    send_resp(conn,200,"world")
+    send_resp(conn, 200, "world")
   end
 
   forward("/api",

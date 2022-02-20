@@ -9,6 +9,12 @@
 # move said applications out of the umbrella.
 import Config
 
+config :model, Model.Repo,
+  database: "my_desk",
+  username: "zly",
+  password: "980108",
+  hostname: "101.35.238.22"
+
 # Sample configuration:
 #
 #     config :logger, :console,
@@ -18,3 +24,6 @@ import Config
 #
 
 config :tesla, adapter: Tesla.Adapter.Hackney
+
+config :model,
+  ecto_repos: [Model.Repo]

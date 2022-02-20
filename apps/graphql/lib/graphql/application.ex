@@ -10,7 +10,7 @@ defmodule Graphql.Application do
     children = [
       # Starts a worker by calling: Graphql.Worker.start_link(arg)
       # {Graphql.Worker, arg}
-      {Task.Supervisor, name: Graphql.TaskSupervisor},
+      {Task.Supervisor, name: Graphql.TaskSupervisor}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

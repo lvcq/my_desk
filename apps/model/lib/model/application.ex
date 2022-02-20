@@ -8,6 +8,7 @@ defmodule Model.Application do
   @impl true
   def start(_type, _args) do
     children = [
+      {Model.Repo, []}
       # Starts a worker by calling: Model.Worker.start_link(arg)
       # {Model.Worker, arg}
     ]
