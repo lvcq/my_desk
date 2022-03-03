@@ -28,6 +28,7 @@ defmodule HttpServer.MixProject do
     [
       {:plug, "~> 1.13"},
       {:plug_cowboy, "~> 2.0"},
+      {:corsica, "~> 1.1"},
       {:jason, "~> 1.3"},
       {:absinthe, "~> 1.7"},
       {:absinthe_plug, "~> 1.5"},

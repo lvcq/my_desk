@@ -17,6 +17,10 @@ defmodule HttpServer.Router do
   plug(:match)
   plug(:dispatch)
 
+  options "/api" do
+    send_resp(conn,200,"cors")
+  end
+
   get "/hello" do
     send_resp(conn, 200, "world")
   end

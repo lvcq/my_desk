@@ -1,6 +1,6 @@
 defmodule HttpServer.Worker do
   def start_link(_opts) do
-    Plug.Cowboy.http(HttpServer.Router, [], port: 4040)
+    Plug.Cowboy.http(HttpServer.Endpoint, [], port: 4040)
   end
 
   def child_spec(opts) do
