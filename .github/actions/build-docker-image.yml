@@ -1,13 +1,8 @@
-name: Build docker image and publish
-
-on: 
-  push: 
-    branches: 
-      - main
-
-jobs:
-  build: 
-  runs-on: ubuntu-latest
+name: Build and publish 
+description: build docker image and publish
+inputs:
+runs:
+  using: 'composite',
   steps:
     - uses: actions/checkout@v2
     - name: Build image
