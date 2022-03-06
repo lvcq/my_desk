@@ -20,7 +20,7 @@ runs:
       run: docker build -t ${{ inputs.docker_repository }}:latest ./
       shell: bash
     - name: Login to registry
-      run: docker login --username=${{ inputs.docker_username }} --password ${{ inputs.docker_password }} 101.35.238.22:5000
+      run: docker login --username=${{ inputs.docker_username }} --password ${{ inputs.docker_password }} registry.zlyt.pub:9443
       shell: bash
     - name: Push Image
       run: docker push ${{ inputs.docker_repository }}:latest
