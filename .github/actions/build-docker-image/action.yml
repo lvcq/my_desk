@@ -23,5 +23,5 @@ runs:
       run: docker login --username=${{ inputs.docker_username }} --password ${{ inputs.docker_password }} registry.zlyt.pub:9443
       shell: bash
     - name: Push Image
-      run: docker push registry.zlyt.pub:9443/${{ inputs.docker_repository }}:latest
+      run: docker push ${{ inputs.docker_repository }}:latest
       shell: bash
