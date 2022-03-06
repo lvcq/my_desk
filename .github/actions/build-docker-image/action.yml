@@ -1,6 +1,5 @@
 name: Build and publish 
 description: build docker image and publish
-inputs:
 runs:
   using: 'composite'
   steps:
