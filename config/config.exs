@@ -27,3 +27,5 @@ config :tesla, adapter: Tesla.Adapter.Hackney
 
 config :model,
   ecto_repos: [Model.Repo]
+
+import_config "#{config_env()}.exs"

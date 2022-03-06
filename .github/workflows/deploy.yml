@@ -7,25 +7,29 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
-
-    name: Build and test
-    runs-on: ubuntu-latest
-
+  test:
+    name: Test elixir code
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Elixir
-      uses: erlef/setup-beam@988e02bfe678367a02564f65ca2e37726dc0268f
-      with:
-        elixir-version: '1.13.3' # Define the elixir version [required]
-        otp-version: '24.2.1' # Define the OTP version [required]
-    - name: Restore dependencies cache
-      uses: actions/cache@v2
-      with:
-        path: deps
-        key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
-        restore-keys: ${{ runner.os }}-mix-
-    - name: Install dependencies
-      run: mix deps.get
-    - name: Run tests
-      run: mix test
+      - uses: ./.github/actions/test.yml
+  
+  build_docker_image:
+    name: Build and push docker image
+    needs: test
+    steps: 
+      - uses: ./.github/actions/build-docker-image.yml
+  
+  deploy: 
+    name: Restart server
+    needs: build_docker_image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy with ssh
+        uses: applyboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.HOST_USERNAME }}
+          password: ${{ secrets.HOST_PASSWORD }}
+          port: ${{ secrets.HOST_PORT }}
+          script: |
+            echo "deploy"
+
