@@ -6,7 +6,10 @@ runs:
   steps:
     - name: Build image
       run: docker build -t ${{ secrets.DOCKER_REPOSITORY }}:latest ./
+      shell: bash
     - name: Login to registry
       run: docker login --username=${{ secrets.DOCKER_USERNAE }} --password ${{ secrets.DOCKER_PASSWORD }} 101.35.238.22:5000
+      shell: bash
     - name: Push Image
       run: docker push ${{ secrets.DOCKER_REPOSITORY }}:latest
+      shell: bash
