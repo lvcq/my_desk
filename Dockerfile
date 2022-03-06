@@ -1,4 +1,4 @@
-FROM elixir:alpine-latest
+FROM elixir:alpine
 
 
 COPY . /app
