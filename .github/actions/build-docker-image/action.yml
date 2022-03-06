@@ -1,14 +1,27 @@
 name: Build and publish 
 description: build docker image and publish
+inputs:
+  docker_repository:
+    description: 'Docker repository. required.'
+    required: true
+    default: ''
+  docker_username:
+    description: 'Docker username. required.'
+    required: true
+    default: ''
+  docker_password:
+    description: 'Docker password. required.'
+    required: true
+    default: ''
 runs:
   using: 'composite'
   steps:
     - name: Build image
-      run: docker build -t ${{ secrets.DOCKER_REPOSITORY }}:latest ./
+      run: docker build -t ${{ inputs.docker_repository }}:latest ./
       shell: bash
     - name: Login to registry
-      run: docker login --username=${{ secrets.DOCKER_USERNAE }} --password ${{ secrets.DOCKER_PASSWORD }} 101.35.238.22:5000
+      run: docker login --username=${{ inputs.docker_username }} --password ${{ inputs.docker_password }} 101.35.238.22:5000
       shell: bash
     - name: Push Image
-      run: docker push ${{ secrets.DOCKER_REPOSITORY }}:latest
+      run: docker push ${{ inputs.docker_repository }}:latest
       shell: bash

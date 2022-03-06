@@ -21,6 +21,11 @@ jobs:
     steps: 
       - uses: actions/checkout@v2
       - uses: ./.github/actions/build-docker-image
+        with:
+          docker_repository: ${{ secrets.DOCKER_REPOSITORY }}
+          docker_username: ${{ secrets.DOCKER_USERNAE }}
+          docker_password: ${{ secrets.DOCKER_PASSWORD }}
+
   
   deploy: 
     name: Restart server
