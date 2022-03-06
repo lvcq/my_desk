@@ -2,9 +2,8 @@ name: Build and publish
 description: build docker image and publish
 inputs:
 runs:
-  using: 'composite',
+  using: 'composite'
   steps:
-    - uses: actions/checkout@v2
     - name: Build image
       run: docker build -t ${{ secrets.DOCKER_REPOSITORY }}:latest ./
     - name: Login to registry
