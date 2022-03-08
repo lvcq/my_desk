@@ -15,7 +15,7 @@ defmodule Graphql.Schema do
     @desc "get region list"
     field :regions, list_of(:region) do
       arg(:name, :string, default_value: "", description: "city name")
-      arg(:limit ,:integer,default_value: 9999, description: "limit return record count")
+      arg(:limit, :integer, default_value: 9999, description: "limit return record count")
       resolve(&Resolvers.Region.query_regions/3)
     end
   end

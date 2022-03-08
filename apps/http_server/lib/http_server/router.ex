@@ -18,7 +18,7 @@ defmodule HttpServer.Router do
   plug(:dispatch)
 
   options "/api" do
-    send_resp(conn,200,"cors")
+    send_resp(conn, 200, "cors")
   end
 
   get "/hello" do

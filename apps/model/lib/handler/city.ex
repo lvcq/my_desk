@@ -6,14 +6,14 @@ defmodule Model.Handler.City do
   Filter all province records,
 
   """
-  def query_city_by_name(name \\ "",limit_count \\ 10) do
+  def query_city_by_name(name \\ "", limit_count \\ 10) do
     try do
       filter = "%#{name}%"
       trans = fn val -> {:ok, val} end
 
       from(city in Model.City)
       |> where([city], like(field(city, :cityzh), ^filter))
-      |> limit([city],^limit_count)
+      |> limit([city], ^limit_count)
       |> Model.Repo.all()
       |> Enum.map(&trans_city_model_to_map/1)
       |> trans.()

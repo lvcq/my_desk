@@ -6,7 +6,7 @@ defmodule Weather.HttpRequest do
 
   def get_current_weather(city_id) do
     {url, appid, appsecret} = get_env_config()
-    request_path = "#{url}?appid=#{appid}&appsecret=#{appsecret}&cityid=#{city_id}"
+    request_path = "#{url}?appid=#{appid}&appsecret=#{appsecret}&cityid=#{city_id}&version=v6"
     Logger.info("request weather info: #{request_path}")
 
     case get(request_path) do

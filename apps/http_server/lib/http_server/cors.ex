@@ -7,6 +7,7 @@ defmodule HttpServer.CORS do
 
   def call(conn, _opts) do
     origin = get_req_header(conn, "origin")
+
     conn
     |> put_resp_header("access-control-allow-origin", Enum.join(origin, ", "))
     |> put_resp_header("Access-Control-Allow-Methods", "GET, POST, DELETE, HEAD, OPTIONS")
