@@ -32,17 +32,24 @@ jobs:
     needs: build_docker_image
     runs-on: ubuntu-latest
     steps:
-      - name: Connect to server with ssh
-        run: ssh ${{secrets.HOST_USERNAME}}:${{secrets.HOST_PASSWORD}}@${{secrets.HOST}}:${{secrets.HOST_PORT}}
-        shell: bash
-      - name: Cd to target dir
-        run: cd /root/docker/my_desk
-        shell: bash
-      - name: Stop my desk server
-        run: docker-compose stop my-desk-server 
-        shell: bash
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/staging.key
+          chmod 600 ~/.ssh/staging.key
+          cat >> ~/.ssh/config <<END
+          Host staging
+            HostName $SSH_HOST
+            User $SSH_USER
+            IdentityFile ~/.ssh/staging.key
+            StrictHostKeyChecking no
+          END
+        env:
+          SSH_USER: ${{ secrets.HOST_USERNAME }}
+          SSH_KEY: ${{ secrets.HOST_SSH_KEY }}
+          SSH_HOST: ${{ secrets.HOST }}
       - name: Restart my desk server
-        run: docker-compose up -d --build my-desk-server
-        shell: bash
+        run: ssh staging 'cd /root/docker/my_desk && docker-compose stop my-desk-server && docker-compose up -d --build my-desk-server'
+
 
 
