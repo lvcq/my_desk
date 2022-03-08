@@ -32,13 +32,17 @@ jobs:
     needs: build_docker_image
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy with ssh
-        uses: applyboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.HOST_USERNAME }}
-          password: ${{ secrets.HOST_PASSWORD }}
-          port: ${{ secrets.HOST_PORT }}
-          script: |
-            echo "deploy"
+      - name: Connect to server with ssh
+        run: ssh ${{secrets.HOST_USERNAME}}:${{secrets.HOST_PASSWORD}}@${{secrets.HOST}}:${{secrets.HOST_PORT}}
+        shell: bash
+      - name: Cd to target dir
+        run: cd /root/docker/my_desk
+        shell: bash
+      - name: Stop my desk server
+        run: docker-compose stop my-desk-server 
+        shell: bash
+      - name: Restart my desk server
+        run: docker-compose up -d --build my-desk-server
+        shell: bash
+
 

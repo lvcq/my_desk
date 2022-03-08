@@ -21,8 +21,9 @@ RUN mix deps.get --only-prod
 RUN MIX_ENV=prod mix release my_desk
 
 # Set Port
-ENV PORT 8080
+ENV PORT 4040
 
+EXPOSE 4040
 
 # Run App
 CMD ["_build/prod/rel/my_desk/bin/my_desk", "start"]
