@@ -1,20 +1,48 @@
 defmodule Graphql.Resolvers.Weather do
   def current_weather(_parent, %{city_id: city_id}, _resolution) do
-    task =
-      Task.async(fn ->
-        Weather.Worker.fetch_current_weather(self(), city_id)
+    case is_exist_weather_record(city_id) do
+      {:error, msg} -> {:error, msg}
+      {:ok,value} -> {:ok,key_map(value)}
+      :false ->
+        task =
+          Task.async(fn ->
+            Weather.Worker.fetch_current_weather(self(), city_id)
 
-        receive do
-          {:ok, value} ->
-            {:ok, key_map(value)}
+            receive do
+              {:ok, value} ->
+                map_value = key_map(value)
+                Model.Handler.Weather.save_weather_record(map_value)
+                {:ok, map_value}
+              _ ->
+                {:error, "fetch current weather fail"}
+                # code
+            end
+          end)
 
-          _ ->
-            {:error, "fetch current weather fail"}
-            # code
+        Task.await(task)
+    end
+
+  end
+
+  # Judge where exists weather record in database, if not exists of The record out time(five minutes), return false
+  defp is_exist_weather_record(cityid) do
+    task = Task.async(fn->
+      Model.Handler.Weather.query_record_by_city_id(cityid)
+    end)
+    case Task.await(task) do
+      {:err, msg} ->
+        {:error,msg}
+      nil ->
+        :false
+      record ->
+        now = DateTime.utc_now() |> DateTime.to_unix(:millisecond)
+        if Map.get(record,"update_at")>now-5*1000*60 do
+          {:ok,record}
+        else
+          :false
         end
-      end)
+    end
 
-    Task.await(task)
   end
 
   # Mapping weather map's key to atom
