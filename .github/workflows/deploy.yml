@@ -49,7 +49,7 @@ jobs:
           SSH_KEY: ${{ secrets.HOST_SSH_KEY }}
           SSH_HOST: ${{ secrets.HOST }}
       - name: Restart my desk server
-        run: ssh staging 'cd /root/docker/my_desk && docker-compose stop my-desk-server && docker-compose up -d --build my-desk-server'
+        run: ssh staging 'cd /root/docker/my_desk && docker-compose stop my-desk-server && docker pull ${{secrets.DOCKER_REPOSITORY}}:latest && docker-compose up -d  my-desk-server'
 
 
 
