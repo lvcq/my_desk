@@ -2,7 +2,7 @@ defmodule Graphql.Resolvers.Weather do
   def current_weather(_parent, %{city_id: city_id}, _resolution) do
     case is_exist_weather_record(city_id) do
       {:error, msg} -> {:error, msg}
-      {:ok,value} -> {:ok,key_map(value)}
+      {:ok,value} -> {:ok,value}
       :false ->
         task =
           Task.async(fn ->
@@ -35,8 +35,9 @@ defmodule Graphql.Resolvers.Weather do
       nil ->
         :false
       record ->
-        now = DateTime.utc_now() |> DateTime.to_unix(:millisecond)
-        if Map.get(record,"update_at")>now-5*1000*60 do
+        now = NaiveDateTime.utc_now()
+        record_time = Map.get(record,:updated_at) |> NaiveDateTime.add(5*60, :second)
+        if  NaiveDateTime.compare(now,record_time) == :lt do
           {:ok,record}
         else
           :false
@@ -92,7 +93,7 @@ defmodule Graphql.Resolvers.Weather do
       :air => Map.get(value, "air"),
       :air_level => Map.get(value, "air_level"),
       :air_tips => Map.get(value, "air_tips"),
-      :update_time => DateTime.utc_now() |> DateTime.to_unix(:millisecond)
+      :updated_at => NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second)
     }
   end
 end

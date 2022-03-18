@@ -21,12 +21,12 @@ defmodule Model.Handler.Weather do
   def save_weather_record(record) do
     cityid = Map.get(record,:cityid)
     query = from(record in Model.Weather, where: [cityid: ^cityid])
-
     Ecto.Multi.new()
-    |> Ecto.Multi.run(:current_weather, fn repo, _changes ->
+    |> Ecto.Multi.run(:weather, fn repo, _changes ->
       {:ok, repo.get(query, 1) || %Weather{}}
     end)
-    |>Ecto.Multi.insert_or_update(:current_weather,fn %{current_weather: current_weather}->
+    |>Ecto.Multi.insert_or_update(:update,fn %{weather: current_weather}->
+      IO.inspect(current_weather)
       Ecto.Changeset.change(current_weather,record)
     end)
     |>Model.Repo.transaction()
