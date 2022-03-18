@@ -1,7 +1,7 @@
 defmodule Model.Weather do
   use Ecto.Schema
 
-  schema "weather" do
+  schema "current_weather" do
     field(:cityid, :string)
     field(:date, :string)
     field(:week, :string)
